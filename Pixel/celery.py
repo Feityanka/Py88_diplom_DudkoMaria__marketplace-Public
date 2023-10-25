@@ -5,5 +5,5 @@ from django.conf import settings
 
 os.environ.setdefault("DJANGO_SETTING_MODULE", "Pixel.settings")
 app = Celery("Pixel")
-app.config_from_object('django.conf:settings')
+app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

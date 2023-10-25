@@ -2,6 +2,7 @@ import os
 import celery
 
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,16 +27,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'main_page',
-    'registration',
     'django_registration',
-    'cart',
-    'orders',
-
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
+    'rosetta',
+    'parler',
+    'localflavor',
+
+    'main_page',
+    'registration',
+    'cart',
+    'orders',
+    'payment',
+    'coupons',
+    'locale',
 ]
 
 MIDDLEWARE = [
@@ -46,7 +52,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
+
+SESSION_COOKIE_AGE = 1209600
+SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True
 
 ROOT_URLCONF = 'Pixel.urls'
 
@@ -78,13 +92,10 @@ DATABASES = {
         'NAME': 'pixelby',
         'USER': 'pixel_superuser',
         'PASSWORD': os.environ.get('PG_PASSWORD'),
-        'HOST': '127.0.0.1',
-        'PORT': 5432,
+        'HOST': '123.168.2.1',
+        'PORT': '6000',
     }
 }
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -101,10 +112,29 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
+LANGUAGE_CODE = 'en'
 
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGES = [
+    ('en', _('English')),
+    ('es', _('Spanish')),
+    ('ru', _('Russian')),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+PARLER_LANGUAGES = {
+    None: (
+        {'code': 'en'},
+        {'code': 'es'},
+        {'code': 'ru'},
+    ),
+    'default': {
+        'fallback': 'en',
+        'hide_untranslated': False
+    }
+}
 
 TIME_ZONE = 'UTC'
 
@@ -112,13 +142,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -132,13 +156,23 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
 }
 
-# Celery
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
 CART_SESSION_ID = 'cart'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+STRIPE_PUBLISHABLE_KEY = ''
+STRIPE_SECRET_KEY = ''
+STRIPE_API_VERSION = ''
+STRIPE_WEBHOOK_SECRET = ''
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 1
