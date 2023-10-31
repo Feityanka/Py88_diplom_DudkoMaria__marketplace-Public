@@ -10,6 +10,7 @@ stripe~=7.0.0
 gettext
 redis~=4.6.0
 django-rosetta
+django-registration
 django-parler~=2.3
 django-localflavor
 weasyprint

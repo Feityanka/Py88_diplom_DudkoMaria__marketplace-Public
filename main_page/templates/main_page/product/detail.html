@@ -14,9 +14,35 @@
         <p class="price">${{ product.price }}</p>
 <form action="{% url "cart:cart_add" product.id %}" method="post">
     {{ cart_product_form }}
+
+    <h2>Reviews</h2>
+    {% for review in reviews %}
+        <div class="review">
+            <p>{{ review.user.username }} , {{ review.date_added }}</p>
+            <p>{{ review.text }}</p>
+        </div>
+    {% empty %}
+        <p>No reviews yet.</p>
+    {% endfor %}
+
+<h2>Add a review</h2>
+    <form method="post" action="{% url 'add_review' product.pk %}">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <button type="submit">Add review</button>
+    </form>
+
+<h2>Rate this product</h2>
+    <form method="post" action="{% url 'add_rating' product.pk %}">
+        {% csrf_token %}
+        {{ rating_form.as_p }}
+        <button type="submit">Rate item</button>
+    </form>
+
     {% csrf_token %}
     <input type="submit" value="{% trans "Add to cart" %}">
 </form>
         {{ product.description|linebreaks }}
     </div>
+
 {% endblock %}

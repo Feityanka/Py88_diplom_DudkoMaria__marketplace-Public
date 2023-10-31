@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 from parler.models import TranslatableModel, TranslatedFields
 
 
@@ -59,3 +60,16 @@ class Product(TranslatableModel):
     def get_absolute_url(self):
         return reverse('main_page:product_detail',
                        args=[self.id, self.slug])
+
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review_text = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+
+
+class Rating(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='ratings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    value = models.IntegerField()

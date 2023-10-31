@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from django.utils.translation import gettext_lazy as _
 
+
 from payment import webhooks
 
 urlpatterns = i18n_patterns(
@@ -14,6 +15,8 @@ urlpatterns = i18n_patterns(
     path(_('payment/'), include('payment.urls')),
     path(_('coupons/'), include('coupons.urls')),
     path('rosetta/', include('rosetta.urls')),
+    path('register/', include('registration.urls')),
+    path('profile/', include('user_profile.urls')),
     path('main-page/', include('main_page.urls')),
 )
 

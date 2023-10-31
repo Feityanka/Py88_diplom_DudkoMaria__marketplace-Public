@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'localflavor',
 
     'main_page',
+    'user_profile',
     'registration',
     'cart',
     'orders',
@@ -159,8 +160,8 @@ SIMPLE_JWT = {
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://127.0.0.1:6379/0")
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CART_SESSION_ID = 'cart'
 
@@ -176,3 +177,5 @@ STATIC_ROOT = BASE_DIR / 'static'
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 1
+
+ACCOUNT_ACTIVATION_DAYS = 7  # user will have a week to activate account or it will be permanently deleted
