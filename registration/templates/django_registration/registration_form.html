@@ -1,23 +1,15 @@
 {% extends "main_page/homepage.html" %}
-
+{% load static %}
+{% csrf_token %}
 {% block content %}
-<form method="POST" novalidate>
-	{% csrf_token %}
-	<h2>Sign Up</h2>
-
-	{% for field in form %}
-	<p>
-		{% if field.errors %}
-		<ul class="errorlist">
-			{% for error in field.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-	 	{{ field.label_tag }} {{ field }}
-	</p>
-	{% endfor %}
-	<input type="submit" value="Register" />
-    <p>Already has an account? <a href="{%url 'login' %}">Login</a></p
+<div class="container py-5">
+<h1>Register</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ RegisterForm }}
+    <button class="btn btn-primary" type="submit">Register</button>
 </form>
-{% endblock content%}
+<p class="text-center">If you already have an account, <a href="/registration/templates/django_registration/login.html">
+    instead.</a></p>
+</div>
+{% endblock %}

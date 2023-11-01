@@ -92,9 +92,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'pixelby',
         'USER': 'pixel_superuser',
-        'PASSWORD': os.environ.get('PG_PASSWORD'),
-        'HOST': '123.168.2.1',
-        'PORT': '6000',
+        'PASSWORD': 'pixelby-marketplace-Admin23',
+        'HOST': 'localhost',
+        'PORT': 5432,
     }
 }
 
@@ -175,7 +175,7 @@ STRIPE_WEBHOOK_SECRET = ''
 STATIC_ROOT = BASE_DIR / 'static'
 
 REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
+REDIS_PORT = 5432
 REDIS_DB = 1
 
 ACCOUNT_ACTIVATION_DAYS = 7  # user will have a week to activate account or it will be permanently deleted

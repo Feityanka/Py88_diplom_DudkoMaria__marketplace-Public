@@ -1,28 +1,45 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
-from registration.forms import LoginForm, RegisterForm
+from django.contrib.auth.forms import AuthenticationForm
+from registration.forms import NewUserForm
 
 
-def sign_up(request):
-    if request.method == 'GET':
-        form = RegisterForm()
-        return render(request, 'django_registration/registration_form.html', {
-            'form': form
-        }
-                      )
-
+def register_request(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = NewUserForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.save()
-            messages.success(request, 'You have singed up successfully.')
+            user = form.save()
             login(request, user)
-            return redirect('posts')
+            messages.success(request, 'Registration. successful.')
+            return redirect('main_page:homepage')
+        messages.error(request, 'Unsuccessful registration. Invalid information.')
+        form = NewUserForm
+        return render(request=request, template_name='main_page/homepage.html')
+
+
+def login_request(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f'You are now logged in as {username}')
+                return redirect('main_page:homepage')
+            else:
+                messages.error(request, 'Invalid username or password')
         else:
-            return render(request, 'django_registration/registration_form.html', {
-                'form': form
-            }
-                          )
+            messages.error(request, 'Invalid username or password')
+    form = AuthenticationForm()
+    return render(request=request, template_name='main_page/homepage.html', context={
+        'login_form': form
+    })
+
+
+def logout_request(request):
+    logout(request)
+    messages.info(request, 'You have successfully logged out')
+    return redirect('main_page/homepage')

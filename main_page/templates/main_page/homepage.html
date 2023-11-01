@@ -5,20 +5,48 @@
     <head>
         <meta charset="utf-8"/>
         <title>{% block title %}{% trans "Pixel.by" %}{% endblock %}</title>
-        <link href="{% static "css/base.css" %}" rel="stylesheet">
+        <link rel="stylesheet" ref="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     </head>
     <body>
-        <header>
-  		{%if request.user.is_authenticated %}
-  			<a href="{% url 'posts' %}">My Posts</a>
-  			<a href="{% url 'post-create' %}">New Post</a>
-  			<span>Hi {{ request.user.username | title }}</span>
-  			<a href="{% url 'logout' %}">Logout</a>
-  		{%else%}
-  			<a href="{% url 'login' %}">Login</a>
-  			<a href="{% url 'register' %}">Register</a>
-  		{%endif%}
-  	</header>
+
+    <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
+          <a class="navbar-brand col-lg-3 me-0" href="/main_page/">Pixel.by</a>
+          <ul class="navbar-nav col-lg-6 justify-content-lg-center">
+              <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true">About us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="product/detail.html">Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/cart/templates/cart/detail.html">Cart</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Contact us</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Telegram</a></li>
+                <li><a class="dropdown-item" href="#">Via phone number</a></li>
+                <li><a class="dropdown-item" href="#">e-mail</a></li>
+              </ul>
+            </li>
+          </ul>
+          <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+              {% if user.is_authenticated %}
+                  <button class="btn btn-primary">Profile</button>
+                  <li class="nav-item">
+                  <a class="nav-link" href="/logout">Logout</a>
+                  </li>
+                  <li class="nav-item">
+                  <a class="nav-link" href="#">Welcome, {{ user.username }}</a>
+                  </li>
+                  {% else %}
+                  <li class="nav-item">
+                  <a class="nav-link" href="/login">Login</a>
+                  </li>
+              {% endif %}
+          </div>
+        </div>
+
         <main>
 	  	{% if messages %}
 			<div class="messages">
@@ -70,8 +98,6 @@
             </div>
         </div>
         <div id="content">
-        {% block content %}
-        {% endblock %}
         </div>
     </body>
 </html>
